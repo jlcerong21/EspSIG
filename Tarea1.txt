@@ -1,0 +1,54 @@
+iniciar-programa
+
+define-nueva-instruccion gira-derecha como inicio
+    repetir 3 veces
+        gira-izquierda;
+    fin;
+{ Avanza en línea recta hasta toparse con alguna pared }
+define-nueva-instruccion buscar-pared como inicio
+    mientras frente-libre hacer inicio
+        avanza;
+    fin;
+fin;
+
+{ Teníamos una pared al frente.
+  Giramos a la izquierda para que esa pared quede ahora a la derecha. }
+define-nueva-instruccion preparar-seguir-pared como inicio
+    gira-izquierda;
+fin;
+
+{ Sigue la pared derecha hasta encontrar la salida.
+  En la salida, sale de la caja y se apaga. }
+define-nueva-instruccion escapar como inicio
+    mientras no-junto-a-zumbador hacer inicio
+        { Regla de la mano derecha con salida:
+          - Si la derecha está libre -> es la salida: salir y apagar.
+          - Si no, pero el frente está libre -> avanzar.
+          - Si no, girar a la izquierda. }
+        si derecha-libre entonces inicio
+            { Salimos de la caja y damos un paso más fuera para asegurar que
+              no seguimos pegados a la pared de la caja. }
+            gira-derecha;
+            avanza;   { cruza la salida }
+            avanza;   { se aleja de la caja }
+            apagate;
+        fin
+        sino inicio
+            si frente-libre entonces inicio
+                avanza;
+            fin
+            sino inicio
+                gira-izquierda;
+            fin;
+        fin;
+    fin;
+fin;
+
+inicia-ejecucion
+    buscar-pared;          { Desde donde esté, va recto hasta topar con una pared }
+    preparar-seguir-pared; { Deja esa pared a su derecha }
+    escapar;               { Sigue la pared derecha, sale por el hueco y se apaga }
+    apagate;
+termina-ejecucion
+
+finalizar-programa

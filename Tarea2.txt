@@ -1,0 +1,141 @@
+iniciar-programa
+
+   {--------------------------------------}
+   {   GIROS Y ORIENTACIONES BÁSICAS     }
+   {--------------------------------------}
+
+   define-nueva-instruccion gira-derecha como inicio
+      repetir 3 veces
+         gira-izquierda;
+      fin;
+
+   define-nueva-instruccion mira-norte como inicio
+      mientras no-orientado-al-norte hacer inicio
+         gira-izquierda;
+      fin;
+   fin;
+
+   define-nueva-instruccion mira-sur como inicio
+      mientras no-orientado-al-sur hacer inicio
+         gira-izquierda;
+      fin;
+   fin;
+
+   define-nueva-instruccion mira-este como inicio
+      mientras no-orientado-al-este hacer inicio
+         gira-izquierda;
+      fin;
+   fin;
+
+   define-nueva-instruccion mira-oeste como inicio
+      mientras no-orientado-al-oeste hacer inicio
+         gira-izquierda;
+      fin;
+   fin;
+
+   {--------------------------------------}
+   {   IR A LA ESQUINA SUPERIOR IZQUIERDA }
+   {--------------------------------------}
+
+   define-nueva-instruccion ir-esquina-superior-izquierda como inicio
+      mira-oeste;
+      mientras frente-libre hacer inicio
+         avanza;
+      fin;
+
+      mira-norte;
+      mientras frente-libre hacer inicio
+         avanza;
+      fin;
+   fin;
+
+   {--------------------------------------}
+   {   BARRER UNA FILA (IDA Y VUELTA)     }
+   {--------------------------------------}
+
+   define-nueva-instruccion recolectar-fila-este como inicio
+      mira-este;
+      mientras frente-libre hacer inicio
+         si junto-a-zumbador entonces inicio
+            coge-zumbador;
+         fin;
+         avanza;
+      fin;
+      { revisar la última casilla del extremo }
+      si junto-a-zumbador entonces inicio
+         coge-zumbador;
+      fin;
+   fin;
+
+   define-nueva-instruccion recolectar-fila-oeste como inicio
+      mira-oeste;
+      mientras frente-libre hacer inicio
+         si junto-a-zumbador entonces inicio
+            coge-zumbador;
+         fin;
+         avanza;
+      fin;
+      { revisar la última casilla del extremo }
+      si junto-a-zumbador entonces inicio
+         coge-zumbador;
+      fin;
+   fin;
+
+   {--------------------------------------}
+   {   IR A LA ESQUINA INFERIOR DERECHA   }
+   {--------------------------------------}
+
+   define-nueva-instruccion ir-esquina-inferior-derecha como inicio
+      mira-sur;
+      mientras frente-libre hacer inicio
+         avanza;
+      fin;
+
+      mira-este;
+      mientras frente-libre hacer inicio
+         avanza;
+      fin;
+   fin;
+
+   {--------------------------------------}
+   {           PROGRAMA PRINCIPAL         }
+   {--------------------------------------}
+
+   inicia-ejecucion
+
+      { 1. Vamos a la esquina superior izquierda }
+      ir-esquina-superior-izquierda;
+
+      { 2. Barrido por filas hasta encontrar el zumbador }
+      mientras ningun-zumbador-en-la-mochila hacer inicio
+         { estamos en la columna izquierda de alguna fila }
+
+         recolectar-fila-este;
+         recolectar-fila-oeste;
+
+         { bajar una fila }
+         mira-sur;
+         si frente-libre entonces inicio
+            avanza;
+         fin
+         sino inicio
+            { según el enunciado, esto no debería pasar
+              porque el zumbador existe; si pasa, nos apagamos }
+            apagate;
+         fin;
+      fin;
+
+      { 3. Ya tenemos el zumbador en la mochila.
+           Ahora vamos a la esquina inferior derecha de la caja grande }
+      ir-esquina-inferior-derecha;
+
+      { 4. Dejamos todos los zumbadores (en este problema sólo hay 1) }
+      mientras algun-zumbador-en-la-mochila hacer inicio
+         deja-zumbador;
+      fin;
+
+      apagate;
+
+   termina-ejecucion
+
+finalizar-programa
